@@ -1,84 +1,129 @@
 import time
+import logging
+
+# ----------------------------------------------------
+# [ISSUE #17] CONFIGURACIÓN DEL LOGGING
+# ----------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("taximetro.log"), 
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('TaximetroDigital')
+
+# [ISSUE #18] DEFINICIÓN DE LA TARIFA MÍNIMA
+MIN_FARE = 5.00 # <-- Nuevo: Tarifa mínima fija
+
+# --- FUNCIONES DE CÁLCULO ---
 
 def calculate_fare(seconds_stopped, seconds_moving):
     """
-    Calcular la tarifa total en euros.
-    - Stopped: 0.02 €/s
-    - Moving: 0.05 €/s
+    [ISSUE #18] Calcula la tarifa total en euros y aplica la tarifa mínima.
     """
+    # Tarifas base: 0.02 €/s detenido, 0.05 €/s movimiento
     fare = seconds_stopped * 0.02 + seconds_moving * 0.05
-    print(f"Este es el total: {fare}")
-    return fare
+    
+    # [ISSUE #18] Lógica para aplicar la Tarifa Mínima Fija
+    if fare < MIN_FARE:
+        # [ISSUE #17] Usamos el logger para registrar cuando se aplica la regla de negocio
+        logger.info(f"APLICANDO TARIFA MÍNIMA: Tarifa calculada (€{fare:.2f}) < Tarifa Mínima (€{MIN_FARE:.2f})")
+        return MIN_FARE # Devolvemos 5.00€
+    else:
+        return fare # Devolvemos la tarifa calculada original
+
+# --- FUNCIÓN DE FEEDBACK PARA VISUALIZACIÓN (ISSUE #15) ---
+
+def display_fare_status(current_stopped, current_moving, current_state):
+    """ 
+    [ISSUE #15] Muestra el estado actual y la tarifa acumulada para el usuario.
+    """
+    # Llama a la función calculate_fare (que ahora aplica la regla del mínimo)
+    current_fare = calculate_fare(current_stopped, current_moving)
+    print("=" * 45)
+    print(f"ESTADO ACTUAL: {current_state.upper()} ⏱️")
+    print(f"TIEMPO TOTAL MOVIMIENTO: {current_moving:.1f}s | TIEMPO TOTAL DETENIDO: {current_stopped:.1f}s")
+    print(f"💰 TARIFA ACUMULADA: €{current_fare:.2f}")
+    print("=" * 45)
+
+# --- FUNCIÓN PRINCIPAL (El resto permanece igual) ---
 
 def taximeter():
-    """
-    Función para manejar y mostrar las opciones del taxímetro.
-    """
-    print("Welcome to the F5 Taximeter!")
+    logger.info("APLICACIÓN INICIADA: Welcome to the F5 Taximeter!")
     print("Available commands: 'start', 'stop', 'move', 'finish', 'exit'\n")
 
     trip_active = False
-    start_time = 0
     stopped_time = 0
     moving_time = 0
-    state = None  # 'stopped' o 'moving'
+    state = None 
     state_start_time = 0
 
     while True:
+        if trip_active and state is not None:
+            display_fare_status(stopped_time, moving_time, state)
+
         command = input("> ").strip().lower()
 
         if command == "start":
             if trip_active:
+                logger.warning("Intento de iniciar viaje cuando ya estaba activo.")
                 print("Error: A trip is already in progress.")
                 continue
+
             trip_active = True
-            start_time = time.time()
             stopped_time = 0
             moving_time = 0
-            state = 'stopped'  # Iniciamos en estado 'stopped'
+            state = 'stopped'
             state_start_time = time.time()
-            print("Trip started. Initial state: 'stopped'.")
+            logger.info("EVENTO: Carrera iniciada. Estado inicial: 'stopped'.")
+            print("Trip started. Initial state: 'stopped'.") 
 
         elif command in ("stop", "move"):
             if not trip_active:
+                logger.warning("Error: No se puede cambiar de estado sin un viaje activo.")
                 print("Error: No active trip. Please start first.")
                 continue
-            # Calcula el tiempo del estado anterior
+            
+            old_state = state
             duration = time.time() - state_start_time
+
             if state == 'stopped':
                 stopped_time += duration
-            else:
+            elif state == 'moving':
                 moving_time += duration
 
-            # Cambia el estado
             state = 'stopped' if command == "stop" else 'moving'
             state_start_time = time.time()
+            
+            logger.info(f"CAMBIO DE ESTADO: De '{old_state}' a '{state}'. Tiempo acumulado en '{old_state}': {duration:.1f}s")
             print(f"State changed to '{state}'.")
 
         elif command == "finish":
             if not trip_active:
+                logger.warning("Error: Intento de finalizar viaje cuando no hay uno activo.")
                 print("Error: No active trip to finish.")
                 continue
-            # Agrega tiempo del último estado
+
             duration = time.time() - state_start_time
             if state == 'stopped':
                 stopped_time += duration
             else:
                 moving_time += duration
+            
+            # Llama a la función modificada que aplica la tarifa mínima
+            final_fare = calculate_fare(stopped_time, moving_time)
 
-            # Calcula la tarifa total y muestra el resumen del viaje
-            total_fare = calculate_fare(stopped_time, moving_time)
-            print(f"\n--- Trip Summary ---")
-            print(f"Stopped time: {stopped_time:.1f} seconds")
-            print(f"Moving time: {moving_time:.1f} seconds")
-            print(f"Total fare: €{total_fare:.2f}")
-            print("---------------------\n")
+            display_fare_status(stopped_time, moving_time, "FINALIZADO")
+            
+            logger.info(f"VIAJE FINALIZADO. Tiempo total (Mov: {moving_time:.1f}s | Det: {stopped_time:.1f}s). Tarifa final: €{final_fare:.2f}")
 
-            # Reset las variables para el próximo viaje
             trip_active = False
             state = None
 
         elif command == "exit":
+            logger.info("APLICACIÓN FINALIZADA. El usuario ha salido.")
             print("Exiting the program. Goodbye!")
             break
 

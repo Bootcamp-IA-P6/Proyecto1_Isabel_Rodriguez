@@ -1,0 +1,29 @@
+2025-12-10 19:52:19,789 - INFO - APLICACIÓN INICIADA: Welcome to the F5 Taximeter!
+2025-12-10 19:52:30,443 - INFO - EVENTO: Carrera iniciada. Estado inicial: 'stopped'.
+2025-12-10 19:52:36,623 - INFO - CAMBIO DE ESTADO: De 'stopped' a 'moving'. Tiempo acumulado en 'stopped': 6.2s
+2025-12-10 19:52:47,216 - INFO - CAMBIO DE ESTADO: De 'moving' a 'stopped'. Tiempo acumulado en 'moving': 10.6s
+2025-12-10 19:52:49,126 - INFO - CAMBIO DE ESTADO: De 'stopped' a 'moving'. Tiempo acumulado en 'stopped': 1.9s
+2025-12-10 19:52:51,472 - INFO - CAMBIO DE ESTADO: De 'moving' a 'stopped'. Tiempo acumulado en 'moving': 2.3s
+2025-12-10 19:52:55,402 - INFO - CAMBIO DE ESTADO: De 'stopped' a 'moving'. Tiempo acumulado en 'stopped': 3.9s
+2025-12-10 19:56:03,245 - INFO - CAMBIO DE ESTADO: De 'moving' a 'stopped'. Tiempo acumulado en 'moving': 187.8s
+2025-12-10 19:56:06,106 - INFO - VIAJE FINALIZADO. Tiempo total (Mov: 200.8s | Det: 14.9s). Tarifa final: €10.34
+2025-12-10 20:11:19,744 - INFO - APLICACIÓN FINALIZADA. El usuario ha salido.
+2025-12-12 14:26:27,879 - INFO - APLICACIÓN INICIADA: Welcome to the F5 Taximeter!
+2025-12-12 14:26:32,923 - INFO - EVENTO: Carrera iniciada. Estado inicial: 'stopped'.
+2025-12-12 14:26:32,939 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.00) < Tarifa Mínima (€5.00)
+2025-12-12 14:26:43,845 - INFO - CAMBIO DE ESTADO: De 'stopped' a 'moving'. Tiempo acumulado en 'stopped': 10.9s
+2025-12-12 14:26:43,845 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.22) < Tarifa Mínima (€5.00)
+2025-12-12 14:26:53,638 - INFO - CAMBIO DE ESTADO: De 'moving' a 'stopped'. Tiempo acumulado en 'moving': 9.8s
+2025-12-12 14:26:53,638 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.71) < Tarifa Mínima (€5.00)
+2025-12-12 14:26:56,849 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.77) < Tarifa Mínima (€5.00)
+2025-12-12 14:26:56,850 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.77) < Tarifa Mínima (€5.00)
+2025-12-12 14:26:56,851 - INFO - VIAJE FINALIZADO. Tiempo total (Mov: 9.8s | Det: 14.1s). Tarifa final: €5.00
+2025-12-12 14:27:08,277 - INFO - APLICACIÓN FINALIZADA. El usuario ha salido.
+2025-12-12 14:27:32,484 - INFO - APLICACIÓN INICIADA: Welcome to the F5 Taximeter!
+2025-12-12 14:27:35,464 - INFO - EVENTO: Carrera iniciada. Estado inicial: 'stopped'.
+2025-12-12 14:27:35,465 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.00) < Tarifa Mínima (€5.00)
+2025-12-12 14:27:38,920 - INFO - CAMBIO DE ESTADO: De 'stopped' a 'moving'. Tiempo acumulado en 'stopped': 3.5s
+2025-12-12 14:27:38,921 - INFO - APLICANDO TARIFA MÍNIMA: Tarifa calculada (€0.07) < Tarifa Mínima (€5.00)
+2025-12-12 14:29:40,743 - INFO - CAMBIO DE ESTADO: De 'moving' a 'stopped'. Tiempo acumulado en 'moving': 121.8s
+2025-12-12 14:29:45,811 - INFO - VIAJE FINALIZADO. Tiempo total (Mov: 121.8s | Det: 8.5s). Tarifa final: €6.26
+2025-12-12 14:29:50,472 - INFO - APLICACIÓN FINALIZADA. El usuario ha salido.
